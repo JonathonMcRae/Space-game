@@ -1,70 +1,136 @@
 package main;
 
-
-
+import java.awt.Canvas;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-
-
-
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 
-public class Game implements ActionListener {
-    BufferStrategy strategy;
-    public Game() {
-	JFrame container = new JFrame("CSE 2102");
-	container.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+public class Game extends Canvas implements Runnable{
 	
-	JPanel panel = (JPanel) container.getContentPane();
-	panel.setPreferredSize(new Dimension(800,600));
-	panel.setLayout(null);
+	private static final long serialVersionUID = 1L;
+	public static final int Width = 800;
+	public static final int Height = 600;
+	public final String Title = "Padriaca";
 	
-	panel.setBounds(0,0,800,600);
-	
-	panel.setIgnoreRepaint(true);
-	
-	JMenuBar jmenubar = new JMenuBar();
-	
-	JMenu jmGameOptions = new JMenu("Game");
-	
-	JMenuItem jmiOpen = new JMenuItem("Open");
-	jmGameOptions.add(jmiOpen);
-	jmiOpen.addActionListener(this);
-	
-	JMenuItem jmiClose = new JMenuItem("Close");
-	jmGameOptions.add(jmiClose);
-	jmiClose.addActionListener(this);
-	
-	JMenuItem jmiSave = new JMenuItem("Save");
-	jmGameOptions.add(jmiSave);
-	jmiSave.addActionListener(this);
-	
-	JMenuItem jmiExit = new JMenuItem("Exit");
-	jmGameOptions.add(jmiExit);
-	jmiExit.addActionListener(this);
-	
-	jmenubar.add(jmGameOptions);
+	private boolean gameon = false;
+	private Thread thread;
 	
 	
-	container.setJMenuBar(jmenubar);
-	container.setVisible(true);
-    
+	private BufferedImage image = new BufferedImage(Width, Height, BufferedImage.TYPE_INT_RGB);
+	private BufferedImage spriteSheet =  null;
 	
 	
-	container.pack();
-	container.setResizable(false);
+	private BufferedImage player;
+	
+	public void init()
+	{
+		BufferedImageLoader loader = new BufferedImageLoader();
+		try{
+			
+			spriteSheet = loader.loadimage("/sprite_sheet.png");
+			
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		SpriteSheet ss = new SpriteSheet(spriteSheet);
+		player = ss.grabimage(1, 1, 16, 16);
+	}
 	
 	
-    }
-    public void actionPerformed(ActionEvent ae) {
-	String comStr = ae.getActionCommand();
-	System.out.println(comStr + " Selected");
-    }
+	
+	public static void main(String args[]){
+		Game game = new Game();
+		
+		game.setPreferredSize(new Dimension(Width, Height));
+		
+		JFrame screen = new JFrame(game.Title);
+		screen.add(game);
+		screen.pack();
+		screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		screen.setResizable(false);
+		screen.setVisible(true);
+		
+		game.start();
+	}
+
+	
+	private synchronized void start(){
+		if (gameon)
+			return;
+		gameon = true;
+		thread = new Thread(this);
+		thread.start();
+	}
+	
+	private synchronized void stop(){
+		if (!gameon)
+			return;
+		gameon = false;
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.exit(1);
+	}
+	
+	
+	//game loop
+	public void run() {
+		init();
+		long lasttime = System.nanoTime();
+		final double ticks = 60.0;
+		double ns = 1000000000 / ticks;
+		double delta = 0;
+		int updates = 0;
+		int frames = 0;
+		long timer = System.currentTimeMillis();
+		while(gameon){
+			long now = System.nanoTime();
+			delta += (now - lasttime) / ns;
+			lasttime = now;
+			if(delta >= 1){
+				tick();
+				updates++;
+				delta --;
+			}
+			render();
+			frames++;
+			if (System.currentTimeMillis() - timer > 1000){
+				timer += 1000;
+				System.out.println(updates +" Ticks, FPS: " + frames);
+				updates = 0;
+				frames = 0;
+			}
+			
+		}
+		stop();
+		
+	}
+
+
+	private void tick() {
+		
+	}
+	private void render(){
+		BufferStrategy bufferstrat = this.getBufferStrategy();
+		if (bufferstrat == null){
+			createBufferStrategy(3);
+			return;
+		}
+		Graphics g = bufferstrat.getDrawGraphics();
+		/////////////////
+		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+		
+		g.drawImage(player, 100, 100, this);
+		
+		/////////////////
+		g.dispose();
+		bufferstrat.show();
+		
+	}
 }
