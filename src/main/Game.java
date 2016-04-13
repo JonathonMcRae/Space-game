@@ -1,5 +1,6 @@
 package main;
 
+
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -24,7 +25,8 @@ public class Game extends Canvas implements Runnable{
 	private BufferedImage spriteSheet =  null;
 	
 	
-	private BufferedImage player;
+	//private BufferedImage player;
+	private Player p;
 	
 	public void init()
 	{
@@ -37,7 +39,8 @@ public class Game extends Canvas implements Runnable{
 			e.printStackTrace();
 		}
 		SpriteSheet ss = new SpriteSheet(spriteSheet);
-		player = ss.grabimage(1, 1, 16, 16);
+		//player = ss.grabimage(1, 1, 16, 16);
+		p = new Player(200, 200, this);
 	}
 	
 	
@@ -114,7 +117,7 @@ public class Game extends Canvas implements Runnable{
 
 
 	private void tick() {
-		
+		p.tick();
 	}
 	private void render(){
 		BufferStrategy bufferstrat = this.getBufferStrategy();
@@ -126,11 +129,16 @@ public class Game extends Canvas implements Runnable{
 		/////////////////
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
 		
-		g.drawImage(player, 100, 100, this);
+		//g.drawImage(player, 100, 100, this);
+		p.render(g);
 		
 		/////////////////
 		g.dispose();
 		bufferstrat.show();
 		
+	}
+	
+	public BufferedImage getSpriteSheet(){
+		return spriteSheet;
 	}
 }
