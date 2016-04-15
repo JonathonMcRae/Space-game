@@ -4,6 +4,7 @@ package main;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -27,9 +28,11 @@ public class Game extends Canvas implements Runnable{
 	
 	//private BufferedImage player;
 	private Player p;
+	private Controller c;
 	
 	public void init()
 	{
+		requestFocus();
 		BufferedImageLoader loader = new BufferedImageLoader();
 		try{
 			
@@ -38,9 +41,10 @@ public class Game extends Canvas implements Runnable{
 		}catch(IOException e){
 			e.printStackTrace();
 		}
-		SpriteSheet ss = new SpriteSheet(spriteSheet);
-		//player = ss.grabimage(1, 1, 16, 16);
+		addKeyListener(new KeyboardInput(this));
+		
 		p = new Player(200, 200, this);
+		c = new Controller(this);
 	}
 	
 	
@@ -118,6 +122,7 @@ public class Game extends Canvas implements Runnable{
 
 	private void tick() {
 		p.tick();
+		c.tick();
 	}
 	private void render(){
 		BufferStrategy bufferstrat = this.getBufferStrategy();
@@ -131,10 +136,39 @@ public class Game extends Canvas implements Runnable{
 		
 		//g.drawImage(player, 100, 100, this);
 		p.render(g);
+		c.render(g);
 		
 		/////////////////
 		g.dispose();
 		bufferstrat.show();
+		
+	}
+	public void keyPressed(KeyEvent e){
+		int key = e.getKeyCode();
+		if(key == KeyEvent.VK_RIGHT){
+			p.setVelX(5);
+			
+		} else if(key == KeyEvent.VK_LEFT){
+			p.setVelX(-5);
+		} else if(key == KeyEvent.VK_DOWN){
+			p.setVelY(5);
+		} else if(key == KeyEvent.VK_UP){
+			p.setVelY(-5);
+		}
+		
+	}
+	
+	public void keyReleased(KeyEvent e){
+		int key = e.getKeyCode();
+		if(key == KeyEvent.VK_RIGHT){
+			p.setVelX(0);
+		} else if(key == KeyEvent.VK_LEFT){
+			p.setVelX(0);
+		} else if(key == KeyEvent.VK_DOWN){
+			p.setVelY(0);
+		} else if(key == KeyEvent.VK_UP){
+			p.setVelY(0);
+		}
 		
 	}
 	
