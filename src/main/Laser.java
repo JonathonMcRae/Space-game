@@ -2,22 +2,16 @@ package main;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 
 import entity.EntityTypeA;
 
 public class Laser extends GameObject implements EntityTypeA{
 	
 	private Skins skin;
-	private Game game;
-	
-	
-	
 	public Laser(double x, double y, Skins skin, Game game){
 		super(x,y);
 
 		this.skin = skin;
-		this.game = game;
 		
 	}
 	
