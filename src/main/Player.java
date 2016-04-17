@@ -1,24 +1,23 @@
 package main;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-public class Player {
-	
-	private double x;
-	private double y;
+import entity.EntityTypeA;
+
+public class Player extends GameObject implements EntityTypeA{
 	
 	private double velX = 0;
 	private double velY = 0;
 	
-	private BufferedImage player;
 	
-	public Player(double x, double y, Game game){
-		this.x = x;
-		this.y = y;
-		
-		SpriteSheet ss = new SpriteSheet(game.getSpriteSheet());
-		
-		player = ss.grabimage(1 ,1, 64, 64);
+	private Skins skin;
+	private Game game;
+	
+	public Player(double x, double y, Skins skin, Game game){
+		super(x,y);
+		this.skin = skin;
+		this.game = game;
 	}
 	
 	public void tick(){
@@ -37,10 +36,13 @@ public class Player {
 		if (y >= 536){
 			y = 536;
 		}
+		if(GamePhysics.Collision(this, game.eb)){
+			System.out.println("LOSE");
+		}
 	}
 	
 	public void render(Graphics g){
-		g.drawImage(player, (int)x, (int)y, null);
+		g.drawImage(skin.player, (int)x, (int)y, null);
 	}
 	public double getX(){
 		return x;
@@ -60,6 +62,9 @@ public class Player {
 	}
 	public void setVelY(double velY){
 		this.velY = velY;
+	}
+	public Rectangle getBounds(){
+		return new Rectangle((int)x, (int) y, 64, 64);
 	}
 
 }
