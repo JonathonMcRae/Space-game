@@ -6,10 +6,13 @@ import java.awt.image.BufferedImage;
 public class Skins {
 	private int playerx = 1;
 	private int playery = 1;
+	private int player2x = 1;
+	private int player2y = 1;
 	public BufferedImage player;
 	public BufferedImage laser;
 	public BufferedImage enemy1;
 	public BufferedImage padraic;
+	public BufferedImage player2;
 	
 	private SpriteSheet ss = null;
 	
@@ -23,6 +26,7 @@ public class Skins {
 		laser = ss.grabimage(2, 3, 64, 64);
 		enemy1 = ss.grabimage(2, 1, 64, 64);
 		padraic = ss.grabimage(2, 2, 64, 64);
+		player2 = ss.grabimage(3, 1, 64, 64);
 		
 	}
 	
@@ -36,5 +40,16 @@ public class Skins {
 	}
 	public int getPlayerY(){
 		return playery;
+	}
+	public void setSelection2(int x, int y){
+		player2x = x;
+		player2y = y;
+	}
+	
+	public int getPlayer2X(){
+		return player2x;
+	}
+	public int getPlayer2Y(){
+		return player2y;
 	}
 }

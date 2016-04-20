@@ -32,6 +32,7 @@ public class Game extends Canvas implements Runnable{
 	private BufferedImage background = null;
 	
 	private int is_shooting = 0;
+	private int is_shooting2 = 0;
 	
 	private int enemy_count = 1;
 	private int kills = 0;
@@ -44,8 +45,10 @@ public class Game extends Canvas implements Runnable{
 	
 	//private BufferedImage player;
 	private Player p;
+	private Player2 p2;
 	private Controller c;
 	private Skins tp;
+	private int numberOfPlayers = 2;
 	
 	public void init()
 	{
@@ -62,6 +65,9 @@ public class Game extends Canvas implements Runnable{
 		addKeyListener(new KeyboardInput(this));
 		tp = new Skins(this);
 		p = new Player(200, 200, tp, this);
+		if(numberOfPlayers == 2){
+			p2 = new Player2(300, 300, tp, this);
+		}
 		c = new Controller(tp, this);
 		ea = c.getEntityA();
 		eb = c.getEntityB();
@@ -144,9 +150,11 @@ public class Game extends Canvas implements Runnable{
 	private void tick() {
 		p.tick();
 		c.tick();
-		
+		if(numberOfPlayers == 2){
+		p2.tick();
+		}
 		if(kills >= enemy_count){
-			enemy_count +=2;
+			enemy_count +=1;
 			kills = 0;
 			c.createEnemy(enemy_count);
 		}
@@ -164,7 +172,9 @@ public class Game extends Canvas implements Runnable{
 		//g.drawImage(player, 100, 100, this);
 		p.render(g);
 		c.render(g);
-		
+		if(numberOfPlayers == 2){
+		p2.render(g);
+		}
 		/////////////////
 		g.dispose();
 		bufferstrat.show();
@@ -181,13 +191,28 @@ public class Game extends Canvas implements Runnable{
 			p.setVelY(5);
 		} else if(key == KeyEvent.VK_UP){
 			p.setVelY(-5);
-		} else if(key == KeyEvent.VK_SPACE ){
+		} else if(key == KeyEvent.VK_L ){
 			if(is_shooting == 3){
 				is_shooting = 0;
 			}
 			if(is_shooting == 0){
 			c.addEntity(new Laser(p.getX(),p.getY(), tp, this));}
 			is_shooting++;
+		} else if(key == KeyEvent.VK_A){
+			p2.setVelX(-5);
+		} else if(key == KeyEvent.VK_D){
+			p2.setVelX(5);
+		}else if(key == KeyEvent.VK_S){
+			p2.setVelY(5);
+		}else if(key == KeyEvent.VK_W){
+			p2.setVelY(-5);
+		}else if(key == KeyEvent.VK_SPACE ){
+			if(is_shooting2 == 3){
+				is_shooting2 = 0;
+			}
+			if(is_shooting2 == 0){
+			c.addEntity(new Laser(p2.getX(),p2.getY(), tp, this));}
+			is_shooting2++;
 		}
 		
 	}
@@ -202,8 +227,21 @@ public class Game extends Canvas implements Runnable{
 			p.setVelY(0);
 		} else if(key == KeyEvent.VK_UP){
 			p.setVelY(0);
-		} else if(key == KeyEvent.VK_SPACE ){
-			is_shooting =0;
+		} else if(key == KeyEvent.VK_L){
+			is_shooting = 0;
+		} else if(key == KeyEvent.VK_A){
+			p2.setVelX(0);
+		} else if(key == KeyEvent.VK_D){
+			p2.setVelX(0);
+		}else if(key == KeyEvent.VK_S){
+			p2.setVelY(0);
+		}else if(key == KeyEvent.VK_W){
+			p2.setVelX(0);
+		}else if(key == KeyEvent.VK_SPACE ){
+			
+				is_shooting2 = 0;
+			
+			
 		}
 		
 	}
