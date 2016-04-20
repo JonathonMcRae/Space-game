@@ -35,9 +35,7 @@ public class Player extends GameObject implements EntityTypeA{
 		if (y >= 536){
 			y = 536;
 		}
-		if(GamePhysics.Collision(this, game.eb)){
-			System.out.println("LOSE");
-		}
+		
 	}
 	
 	public void render(Graphics g){

@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
+import entity.EntityTypeA;
 import entity.EntityTypeB;
 
 public class EnemyFighter extends GameObject implements EntityTypeB{
@@ -12,7 +13,7 @@ public class EnemyFighter extends GameObject implements EntityTypeB{
 	Random r = new Random();
 	private Game game;
 	private Controller controller;
-	private int speed = r.nextInt(3)+1;
+	private double speed = 0.3 + 3 * r.nextDouble() ;
 	
 	public EnemyFighter(double x, double y, Skins skin, Controller c, Game game){
 		super(x,y);
@@ -26,10 +27,13 @@ public class EnemyFighter extends GameObject implements EntityTypeB{
 	
 	public void tick(){
 		x -= speed;
-		if(GamePhysics.Collision(this, game.ea)){
-			controller.removeEntity(this);
-			
-			game.setKills(game.getKills()+1);
+		for(int n = 0; n < game.ea.size(); n++){
+			EntityTypeA tempa = game.ea.get(n);
+			if(GamePhysics.Collision(this, tempa)){
+				controller.removeEntity(this);
+				controller.removeEntity(tempa);
+				game.setKills(game.getKills()+1);
+			}
 		}
 	}
 	public void render(Graphics g){

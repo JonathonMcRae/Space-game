@@ -15,6 +15,8 @@ import javax.swing.JFrame;
 
 import entity.EntityTypeA;
 import entity.EntityTypeB;
+import entity.EntityTypeC;
+import entity.EntityTypeD;
 
 public class Game extends Canvas implements Runnable{
 	
@@ -36,8 +38,12 @@ public class Game extends Canvas implements Runnable{
 	
 	private int enemy_count = 1;
 	private int kills = 0;
+	private int SDcount = 0;
 	public LinkedList<EntityTypeA> ea;
 	public LinkedList<EntityTypeB> eb;
+	public LinkedList<EntityTypeC> ec;
+	public LinkedList<EntityTypeD> ed;
+
 	
 	Random r = new Random();
 
@@ -72,6 +78,9 @@ public class Game extends Canvas implements Runnable{
 		c = new Controller(tp, this);
 		ea = c.getEntityA();
 		eb = c.getEntityB();
+		ec = c.getEntityC();
+		ed = c.getEntityD();
+		c.createStarDestroyer(1);
 		c.createEnemy(enemy_count);
 	}
 	

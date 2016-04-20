@@ -4,22 +4,31 @@ import java.util.LinkedList;
 
 import entity.EntityTypeA;
 import entity.EntityTypeB;
+import entity.EntityTypeC;
 
 public class GamePhysics {
-	public static boolean Collision(EntityTypeA enta, LinkedList<EntityTypeB> bb){
-		for(int n = 0; n <bb.size(); n++ ){
-			if(enta.getBounds().intersects(bb.get(n).getBounds())){
-				return true;
-			}
+	public static boolean Collision(EntityTypeA enta, EntityTypeB bb){
+		
+		if(enta.getBounds().intersects(bb.getBounds())){
+			return true;
+		}
+		
+		return false;
+	}
+	public static boolean Collision(EntityTypeB entb, EntityTypeA aa){
+		if(entb.getBounds().intersects(aa.getBounds())){
+				
+			return true;
+			
 		}
 		return false;
 	}
-	public static boolean Collision(EntityTypeB entb, LinkedList<EntityTypeA> aa){
-		for(int n = 0; n <aa.size(); n++ ){
-			if(entb.getBounds().intersects(aa.get(n).getBounds())){
+	public static boolean Collision(EntityTypeC entc, EntityTypeA aa){
+		
+			if(entc.getBounds().intersects(aa.getBounds())){
 				return true;
 			}
-		}
+		
 		return false;
 	}
 }
