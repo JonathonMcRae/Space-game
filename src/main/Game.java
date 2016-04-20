@@ -49,6 +49,7 @@ public class Game extends Canvas implements Runnable{
 	private Controller c;
 	private Skins tp;
 	private int numberOfPlayers = 2;
+	private boolean padraicmode = false;
 	
 	public void init()
 	{
@@ -261,5 +262,8 @@ public class Game extends Canvas implements Runnable{
 	}
 	public void setKills(int kills) {
 		this.kills = kills;
+	}
+	public boolean getPadraic(){
+		return padraicmode;
 	}
 }
