@@ -170,11 +170,11 @@ public class Game extends Canvas implements Runnable{
 				enemy_count = 2;
 				SDcount++;
 				c.createEnemy(enemy_count);
-			}
+			}else{
 			enemy_count +=1;
 			kills = 0;
 			c.createEnemy(enemy_count);
-		}
+			}}
 		
 	}
 	private void render(){
