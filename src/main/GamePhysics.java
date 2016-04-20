@@ -1,10 +1,10 @@
 package main;
 
-import java.util.LinkedList;
 
 import entity.EntityTypeA;
 import entity.EntityTypeB;
 import entity.EntityTypeC;
+import entity.EntityTypeD;
 
 public class GamePhysics {
 	public static boolean Collision(EntityTypeA enta, EntityTypeB bb){
@@ -31,4 +31,12 @@ public class GamePhysics {
 		
 		return false;
 	}
+	public static boolean Collision(EntityTypeA entA, EntityTypeD dd){
+		
+		if(entA.getBounds().intersects(dd.getBounds())){
+			return true;
+		}
+	
+	return false;
+}
 }

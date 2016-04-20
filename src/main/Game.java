@@ -71,16 +71,17 @@ public class Game extends Canvas implements Runnable{
 		}
 		addKeyListener(new KeyboardInput(this));
 		tp = new Skins(this);
-		p = new Player(200, 200, tp, this);
-		if(numberOfPlayers == 2){
-			p2 = new Player2(300, 300, tp, this);
-		}
 		c = new Controller(tp, this);
+
+		if(numberOfPlayers == 2){
+			p2 = new Player2(300, 300, tp, this, c);
+		}
+		p = new Player(200, 200, tp, this, c);
+
 		ea = c.getEntityA();
 		eb = c.getEntityB();
 		ec = c.getEntityC();
 		ed = c.getEntityD();
-		c.createStarDestroyer(1);
 		c.createEnemy(enemy_count);
 	}
 	
@@ -164,10 +165,17 @@ public class Game extends Canvas implements Runnable{
 		p2.tick();
 		}
 		if(kills >= enemy_count){
+			if (enemy_count == 10){
+				c.createSD(SDcount);
+				enemy_count = 2;
+				SDcount++;
+				c.createEnemy(enemy_count);
+			}
 			enemy_count +=1;
 			kills = 0;
 			c.createEnemy(enemy_count);
 		}
+		
 	}
 	private void render(){
 		BufferStrategy bufferstrat = this.getBufferStrategy();
@@ -193,14 +201,14 @@ public class Game extends Canvas implements Runnable{
 	public void keyPressed(KeyEvent e){
 		int key = e.getKeyCode();
 		if(key == KeyEvent.VK_RIGHT){
-			p.setVelX(5);
+			p.setVelX(6);
 			
 		} else if(key == KeyEvent.VK_LEFT){
-			p.setVelX(-5);
+			p.setVelX(-6);
 		} else if(key == KeyEvent.VK_DOWN){
-			p.setVelY(5);
+			p.setVelY(6);
 		} else if(key == KeyEvent.VK_UP){
-			p.setVelY(-5);
+			p.setVelY(-6);
 		} else if(key == KeyEvent.VK_L ){
 			if(is_shooting == 3){
 				is_shooting = 0;
@@ -209,15 +217,15 @@ public class Game extends Canvas implements Runnable{
 			c.addEntity(new Laser(p.getX(),p.getY(), tp, this));}
 			is_shooting++;
 		} else if(key == KeyEvent.VK_A){
-			p2.setVelX(-5);
+			p2.setVelX(-4);
 		} else if(key == KeyEvent.VK_D){
-			p2.setVelX(5);
+			p2.setVelX(4);
 		}else if(key == KeyEvent.VK_S){
-			p2.setVelY(5);
+			p2.setVelY(4);
 		}else if(key == KeyEvent.VK_W){
-			p2.setVelY(-5);
+			p2.setVelY(-4);
 		}else if(key == KeyEvent.VK_SPACE ){
-			if(is_shooting2 == 3){
+			if(is_shooting2 == 4){
 				is_shooting2 = 0;
 			}
 			if(is_shooting2 == 0){

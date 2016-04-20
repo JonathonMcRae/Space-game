@@ -3,6 +3,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import entity.EntityTypeA;
+import entity.EntityTypeD;
 
 public class Player2 extends GameObject implements EntityTypeA{
 	
@@ -12,11 +13,14 @@ public class Player2 extends GameObject implements EntityTypeA{
 	
 	private Skins skin;
 	private Game game;
+	private Controller controller;
+	private int health = 4;
 	
-	public Player2(double x, double y, Skins skin, Game game){
+	public Player2(double x, double y, Skins skin, Game game, Controller controller){
 		super(x,y);
 		this.skin = skin;
 		this.game = game;
+		this.controller = controller;
 	}
 	
 	public void tick(){
@@ -34,6 +38,17 @@ public class Player2 extends GameObject implements EntityTypeA{
 		}
 		if (y >= 536){
 			y = 536;
+		}
+		for(int n = 0; n < game.ed.size(); n++){
+			EntityTypeD tempa = game.ed.get(n);
+			if(GamePhysics.Collision(this, tempa)){
+				if(health == 1){
+					controller.removeEntity(this);}
+				else{
+					health--;
+					controller.removeEntity(tempa);
+				}
+			}
 		}
 		
 	}

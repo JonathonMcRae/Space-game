@@ -3,26 +3,30 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import entity.EntityTypeA;
+import entity.EntityTypeD;
 
 public class Player extends GameObject implements EntityTypeA{
-	
+
 	private double velX = 0;
 	private double velY = 0;
-	
-	
+	private int health = 3;
+
+
 	private Skins skin;
 	private Game game;
-	
-	public Player(double x, double y, Skins skin, Game game){
+	private Controller controller;
+
+	public Player(double x, double y, Skins skin, Game game, Controller controller){
 		super(x,y);
 		this.skin = skin;
 		this.game = game;
+		this.controller = controller;
 	}
-	
+
 	public void tick(){
 		x += velX;
 		y += velY;
-		
+
 		if (x <= 0 ){
 			x = 0;
 		}
@@ -35,9 +39,20 @@ public class Player extends GameObject implements EntityTypeA{
 		if (y >= 536){
 			y = 536;
 		}
-		
+		for(int n = 0; n < game.ed.size(); n++){
+			EntityTypeD tempa = game.ed.get(n);
+			if(GamePhysics.Collision(this, tempa)){
+				if(health == 1){
+					controller.removeEntity(this);}
+				else{
+					health--;
+					controller.removeEntity(tempa);
+				}
+			}
+		}
+
 	}
-	
+
 	public void render(Graphics g){
 		g.drawImage(skin.player, (int)x, (int)y, null);
 	}
@@ -52,7 +67,7 @@ public class Player extends GameObject implements EntityTypeA{
 	}
 	public void setY(double y){
 		this.y = y;
-		
+
 	}
 	public void setVelX(double velX){
 		this.velX = velX;

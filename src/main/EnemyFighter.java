@@ -14,6 +14,7 @@ public class EnemyFighter extends GameObject implements EntityTypeB{
 	private Game game;
 	private Controller controller;
 	private double speed = 0.3 + 3 * r.nextDouble() ;
+	public double is_shooting = r.nextInt(60);
 	
 	public EnemyFighter(double x, double y, Skins skin, Controller c, Game game){
 		super(x,y);
@@ -24,9 +25,23 @@ public class EnemyFighter extends GameObject implements EntityTypeB{
 	public double getX(){
 		return x;
 	}
+	public void shoot(){
+		if(is_shooting == 0){
+		controller.addEntity(new EnemyLaser(x, y, skin, game));
+		is_shooting++;
+		}
+		else if(is_shooting == 190){
+			is_shooting = 0;
+		}
+		else{
+			is_shooting++;
+		}
+	}
+	
 	
 	public void tick(){
 		x -= speed;
+		shoot();
 		for(int n = 0; n < game.ea.size(); n++){
 			EntityTypeA tempa = game.ea.get(n);
 			if(GamePhysics.Collision(this, tempa)){

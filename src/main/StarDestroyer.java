@@ -36,8 +36,8 @@ public class StarDestroyer extends GameObject implements EntityTypeC{
 		if(GamePhysics.Collision(this, tempa)){
 			if(health ==1)
 				{controller.removeEntity(this);
-				game.setKills(game.getKills()+1);}
-			else{health--;}
+				}
+				else{health--;}
 			controller.removeEntity(tempa);
 			}
 		}
@@ -48,7 +48,7 @@ public class StarDestroyer extends GameObject implements EntityTypeC{
 		controller.addEntity(new EnemyLaser(x, y, skin, game));
 		is_shooting++;
 		}
-		else if(is_shooting == r.nextDouble()* 60 + 60){
+		else if(is_shooting == 100){
 			is_shooting = 0;
 		}
 		else{
