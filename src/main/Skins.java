@@ -25,7 +25,7 @@ public class Skins {
 		getTextures();
 		
 	}
-	private void getTextures(){
+	public void getTextures(){
 		if(game.getPadraic()){
 			player = ss.grabimage(2, 2, 64, 64);
 			laser = ss.grabimage(3, 2, 64, 64);
