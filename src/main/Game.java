@@ -19,41 +19,53 @@ import entity.EntityTypeC;
 import entity.EntityTypeD;
 
 public class Game extends Canvas implements Runnable{
-	
+
 	private static final long serialVersionUID = 1L;
 	public static final int Width = 800;
 	public static final int Height = 600;
 	public final String Title = "spaaaaaace";
-	
+
 	private boolean gameon = false;
 	private Thread thread;
-	
-	
+
+
 	private BufferedImage image = new BufferedImage(Width, Height, BufferedImage.TYPE_INT_RGB);
 	private BufferedImage spriteSheet =  null;
 	private BufferedImage background = null;
-	
+	private BufferedImage level0 = null;
+	private BufferedImage level1 = null;
+	private BufferedImage level2 = null;
+	private BufferedImage level3 = null;
+	private BufferedImage level4 = null;
+	private BufferedImage level5 = null;
+	private BufferedImage level6 = null;
+
 	private int is_shooting = 0;
 	private int is_shooting2 = 0;
-	
+
 	private int enemy_count = 1;
-	private int kills = 0;
+	private int Tiekills = 0;
 	private int SDcount = 0;
+	private int SDkills = 0;
+	private int Score = 0;
+	private int level = 0;
+	private int delay = 0;
 	public LinkedList<EntityTypeA> ea;
 	public LinkedList<EntityTypeB> eb;
 	public LinkedList<EntityTypeC> ec;
 	public LinkedList<EntityTypeD> ed;
-	
+
+
 	public static enum STATE {
 		MENU,
 		GAME
 	};
 	public static STATE State = STATE.MENU;
-	
+
 	Random r = new Random();
 
-	
-	
+
+
 	//private BufferedImage player;
 	private Player p;
 	private Player2 p2;
@@ -62,16 +74,16 @@ public class Game extends Canvas implements Runnable{
 	private Menu menu;
 	public static int numberOfPlayers = 2;
 	public static boolean padraicmode = false;
-	
+
 	public void init()
 	{
 		requestFocus();
 		BufferedImageLoader loader = new BufferedImageLoader();
 		try{
-			
+
 			spriteSheet = loader.loadimage("/sprite_sheet.png");
 			background = loader.loadimage("/background.png");
-			
+
 		}catch(IOException e){
 			e.printStackTrace();
 		}
@@ -92,25 +104,25 @@ public class Game extends Canvas implements Runnable{
 		ed = c.getEntityD();
 		c.createEnemy(enemy_count);
 	}
-	
-	
-	
+
+
+
 	public static void main(String args[]){
 		Game game = new Game();
-		
+
 		game.setPreferredSize(new Dimension(Width, Height));
-		
+
 		JFrame screen = new JFrame(game.Title);
 		screen.add(game);
 		screen.pack();
 		screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		screen.setResizable(false);
 		screen.setVisible(true);
-		
+
 		game.start();
 	}
 
-	
+
 	private synchronized void start(){
 		if (gameon)
 			return;
@@ -118,7 +130,7 @@ public class Game extends Canvas implements Runnable{
 		thread = new Thread(this);
 		thread.start();
 	}
-	
+
 	private synchronized void stop(){
 		if (!gameon)
 			return;
@@ -130,8 +142,8 @@ public class Game extends Canvas implements Runnable{
 		}
 		System.exit(1);
 	}
-	
-	
+
+
 	//game loop
 	public void run() {
 		init();
@@ -160,10 +172,10 @@ public class Game extends Canvas implements Runnable{
 				updates = 0;
 				frames = 0;
 			}
-			
+
 		}
 		stop();
-		
+
 	}
 
 
@@ -172,21 +184,21 @@ public class Game extends Canvas implements Runnable{
 			p.tick();
 			c.tick();
 			if(numberOfPlayers == 2){
-			p2.tick();
+				p2.tick();
 			}
 		}
-		if(kills >= enemy_count){
+		if(Tiekills >= enemy_count){
 			if (enemy_count == 10){
 				c.createSD(SDcount);
 				enemy_count = 2;
 				SDcount++;
 				c.createEnemy(enemy_count);
 			}else{
-			enemy_count +=1;
-			kills = 0;
-			c.createEnemy(enemy_count);
+				enemy_count +=1;
+				Tiekills = 0;
+				c.createEnemy(enemy_count);
 			}}
-		
+
 	}
 	private void render(){
 		BufferStrategy bufferstrat = this.getBufferStrategy();
@@ -203,7 +215,7 @@ public class Game extends Canvas implements Runnable{
 			p.render(g);
 			c.render(g);
 			if(numberOfPlayers == 2){
-			p2.render(g);
+				p2.render(g);
 			}
 		}else if(State == STATE.MENU){
 			menu.render(g);
@@ -211,14 +223,14 @@ public class Game extends Canvas implements Runnable{
 		/////////////////
 		g.dispose();
 		bufferstrat.show();
-		
+
 	}
 	public void keyPressed(KeyEvent e){
 		int key = e.getKeyCode();
 		if(State == STATE.GAME){
 			if(key == KeyEvent.VK_RIGHT){
 				p.setVelX(6);
-				
+
 			} else if(key == KeyEvent.VK_LEFT){
 				p.setVelX(-6);
 			} else if(key == KeyEvent.VK_DOWN){
@@ -230,28 +242,30 @@ public class Game extends Canvas implements Runnable{
 					is_shooting = 0;
 				}
 				if(is_shooting == 0){
-				c.addEntity(new Laser(p.getX(),p.getY(), tp, this));}
+					c.addEntity(new Laser(p.getX(),p.getY(), tp, this));}
 				is_shooting++;
-			} else if(key == KeyEvent.VK_A){
-				p2.setVelX(-4);
-			} else if(key == KeyEvent.VK_D){
-				p2.setVelX(4);
-			}else if(key == KeyEvent.VK_S){
-				p2.setVelY(4);
-			}else if(key == KeyEvent.VK_W){
-				p2.setVelY(-4);
-			}else if(key == KeyEvent.VK_SPACE ){
-				if(is_shooting2 == 4){
-					is_shooting2 = 0;
+			} 
+			if(numberOfPlayers == 2){
+				if(key == KeyEvent.VK_A){
+					p2.setVelX(-4);
+				} else if(key == KeyEvent.VK_D){
+					p2.setVelX(4);
+				}else if(key == KeyEvent.VK_S){
+					p2.setVelY(4);
+				}else if(key == KeyEvent.VK_W){
+					p2.setVelY(-4);
+				}else if(key == KeyEvent.VK_SPACE ){
+					if(is_shooting2 == 4){
+						is_shooting2 = 0;
+					}
+					if(is_shooting2 == 0){
+						c.addEntity(new Laser(p2.getX(),p2.getY(), tp, this));}
+					is_shooting2++;
 				}
-				if(is_shooting2 == 0){
-				c.addEntity(new Laser(p2.getX(),p2.getY(), tp, this));}
-				is_shooting2++;
-			}
-		}
-		
+			}}
+
 	}
-	
+
 	public void keyReleased(KeyEvent e){
 		int key = e.getKeyCode();
 		if(key == KeyEvent.VK_RIGHT){
@@ -264,40 +278,54 @@ public class Game extends Canvas implements Runnable{
 			p.setVelY(0);
 		} else if(key == KeyEvent.VK_L){
 			is_shooting = 0;
-		} else if(key == KeyEvent.VK_A){
-			p2.setVelX(0);
-		} else if(key == KeyEvent.VK_D){
-			p2.setVelX(0);
-		}else if(key == KeyEvent.VK_S){
-			p2.setVelY(0);
-		}else if(key == KeyEvent.VK_W){
-			p2.setVelX(0);
-		}else if(key == KeyEvent.VK_SPACE ){
-			
-				is_shooting2 = 0;
-			
-			
 		}
-		
+		if(numberOfPlayers == 2){
+			if(key == KeyEvent.VK_A){
+				p2.setVelX(0);
+			} else if(key == KeyEvent.VK_D){
+				p2.setVelX(0);
+			}else if(key == KeyEvent.VK_S){
+				p2.setVelY(0);
+			}else if(key == KeyEvent.VK_W){
+				p2.setVelY(0);
+			}else if(key == KeyEvent.VK_SPACE ){
+
+				is_shooting2 = 0;
+
+
+			}}
+
 	}
-	
+
 	public BufferedImage getSpriteSheet(){
 		return spriteSheet;
 	}
-	
+	public int getScore(){
+		return Score;
+	}
+	public void setScore(int score){
+		Score = score;
+	}
 	public int getEnemy_count() {
 		return enemy_count;
 	}
 	public void setEnemy_count(int enemy_count) {
 		this.enemy_count = enemy_count;
 	}
-	public int getKills() {
-		return kills;
+	public int getSDKills(){
+		return SDkills;
 	}
-	public void setKills(int kills) {
-		this.kills = kills;
+	public void setSDKills(int SDkill){
+		SDkills = SDkill;
+	}
+	public int getTieKills() {
+		return Tiekills;
+	}
+	public void setTieKills(int kills) {
+		this.Tiekills = kills;
 	}
 	public boolean getPadraic(){
 		return padraicmode;
 	}
+
 }
