@@ -75,6 +75,7 @@ public class Game extends Canvas implements Runnable{
 	private Controller c;
 	private Skins tp;
 	private Menu menu;
+	private ShowScore showscore;
 	public static int numberOfPlayers = 2;
 	public static boolean padraicmode = false;
 
@@ -107,6 +108,7 @@ public class Game extends Canvas implements Runnable{
 		tp = new Skins(this);
 		c = new Controller(tp, this);
 		menu = new Menu();
+		showscore = new ShowScore(this);
 
 		if(numberOfPlayers == 2){
 			p2 = new Player2(300, 300, tp, this, c);
@@ -286,7 +288,8 @@ public class Game extends Canvas implements Runnable{
 			level = 0;
 		}else if(State == STATE.END){
 			g.drawImage(gameOver,0,0, null);
-			if(delay == 10000){
+			showscore.render(g);
+			if(delay == 1000){
 				State = STATE.MENU;
 			}
 			delay++;
