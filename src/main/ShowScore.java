@@ -14,6 +14,9 @@ public class ShowScore {
 		Font title_font = new Font("comic sans ms", Font.BOLD, 100);
 		g.setFont(title_font);
 		g.setColor(Color.white);
+		if(game.getScore() < 100){
+			shift = 0;
+		}
 		if(game.getScore()>= 100){
 			shift =  -50;
 		}

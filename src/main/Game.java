@@ -299,6 +299,7 @@ public class Game extends Canvas implements Runnable{
 		bufferstrat.show();
 
 	}
+	
 	public void keyPressed(KeyEvent e){
 		int key = e.getKeyCode();
 		if(State == STATE.GAME){

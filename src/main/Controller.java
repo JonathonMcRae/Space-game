@@ -34,7 +34,13 @@ public class Controller {
 
 		}
 	}
-	
+	public void reset(){
+		ea.clear();
+		eb.clear();
+		ec.clear();
+		ed.clear();
+		
+	}
 	
 	
 	public void createSD(int SDcount){
