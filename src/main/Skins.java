@@ -32,6 +32,7 @@ public class Skins {
 			enemy1 = ss.grabimage(1, 3, 64, 64);
 			player2 = ss.grabimage(2, 2, 64, 64);
 			enemyLaser = ss.grabimage(3, 2, 64, 64);
+			starDestroyer = ss.grabimage(3, 3, 128, 128);
 		}else{
 		player = ss.grabimage(playerx, playery, 64, 64);
 		laser = ss.grabimage(2, 3, 64, 64);

@@ -39,6 +39,8 @@ public class Game extends Canvas implements Runnable{
 	private BufferedImage level4 = null;
 	private BufferedImage level5 = null;
 	private BufferedImage level6 = null;
+	private BufferedImage gameOver = null;
+
 
 	private int is_shooting = 0;
 	private int is_shooting2 = 0;
@@ -58,7 +60,8 @@ public class Game extends Canvas implements Runnable{
 
 	public static enum STATE {
 		MENU,
-		GAME
+		GAME,
+		END
 	};
 	public static STATE State = STATE.MENU;
 
@@ -83,6 +86,18 @@ public class Game extends Canvas implements Runnable{
 
 			spriteSheet = loader.loadimage("/sprite_sheet.png");
 			background = loader.loadimage("/background.png");
+			level0 = loader.loadimage("/level0.png");
+			level1 = loader.loadimage("/Space1.png");
+			level2 = loader.loadimage("/Space2.png");
+			level3 = loader.loadimage("/Space3.png");
+			level4 = loader.loadimage("/Space4.png");
+			level5 = loader.loadimage("/Space5.png");
+			level6 = loader.loadimage("/Space6.png");
+			gameOver = loader.loadimage("/GameOver.png");
+
+
+
+
 
 		}catch(IOException e){
 			e.printStackTrace();
@@ -189,15 +204,36 @@ public class Game extends Canvas implements Runnable{
 		}
 		if(Tiekills >= enemy_count){
 			if (enemy_count == 10){
+				SDcount++;
 				c.createSD(SDcount);
 				enemy_count = 2;
-				SDcount++;
+				Tiekills = 0;
 				c.createEnemy(enemy_count);
 			}else{
 				enemy_count +=1;
 				Tiekills = 0;
 				c.createEnemy(enemy_count);
-			}}
+			}
+		}
+		if(Score > 10){
+			level = 1;
+		}
+		if(Score > 500){
+			level = 2;
+		}
+		if(Score > 1000){
+			level = 3;
+		}
+		if(Score > 10000){
+			level = 4;
+		}
+		if(Score > 100000){
+			level = 5;
+		}
+		if(Score > 1000000){
+			level = 6;
+		}
+
 
 	}
 	private void render(){
@@ -209,7 +245,28 @@ public class Game extends Canvas implements Runnable{
 		Graphics g = bufferstrat.getDrawGraphics();
 		/////////////////
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-		g.drawImage(background, 0,0, null);
+
+		if(level == 0){
+			g.drawImage(level0, 0,0, null);
+		}
+		if(level == 1){
+			g.drawImage(level1, 0,0, null);
+		}
+		if(level == 2){
+			g.drawImage(level2, 0,0, null);
+		}
+		if(level == 3){
+			g.drawImage(level3, 0,0, null);
+		}
+		if(level == 4){
+			g.drawImage(level4, 0,0, null);
+		}
+		if(level == 5){
+			g.drawImage(level5, 0,0, null);
+		}
+		if(level > 5){
+			g.drawImage(level6, 0,0, null);
+		}
 		//g.drawImage(player, 100, 100, this);
 		if(State == STATE.GAME){
 			p.render(g);
@@ -218,7 +275,21 @@ public class Game extends Canvas implements Runnable{
 				p2.render(g);
 			}
 		}else if(State == STATE.MENU){
+			g.drawImage(background, 0,0, null);
 			menu.render(g);
+			delay = 0;
+			enemy_count = 1;
+			Tiekills = 0;
+			SDcount = 0;
+			SDkills = 0;
+			Score = 0;
+			level = 0;
+		}else if(State == STATE.END){
+			g.drawImage(gameOver,0,0, null);
+			if(delay == 10000){
+				State = STATE.MENU;
+			}
+			delay++;
 		}
 		/////////////////
 		g.dispose();
@@ -262,7 +333,8 @@ public class Game extends Canvas implements Runnable{
 						c.addEntity(new Laser(p2.getX(),p2.getY(), tp, this));}
 					is_shooting2++;
 				}
-			}}
+			}
+		}
 
 	}
 
