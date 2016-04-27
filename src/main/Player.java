@@ -43,7 +43,9 @@ public class Player extends GameObject implements EntityTypeA{
 			EntityTypeD tempa = game.ed.get(n);
 			if(GamePhysics.Collision(this, tempa)){
 				if(health == 1){
-					controller.removeEntity(this);}
+					game.State = game.State.END;
+					health = 3;
+					}
 				else{
 					health--;
 					controller.removeEntity(tempa);
@@ -77,6 +79,9 @@ public class Player extends GameObject implements EntityTypeA{
 	}
 	public Rectangle getBounds(){
 		return new Rectangle((int)x, (int) y, 64, 64);
+	}
+	public int getHealth(){
+		return health;
 	}
 
 }

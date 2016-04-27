@@ -28,6 +28,10 @@ public class StarDestroyer extends GameObject implements EntityTypeC{
 	}
 	
 	public void tick(){
+		if (x <= -100 ){
+			controller.removeEntity(this);
+			game.setTieKills(game.getTieKills()+1);
+		}
 		x -= speed;
 		shoot();
 		for(int n = 0; n < game.ea.size(); n++){
@@ -36,6 +40,8 @@ public class StarDestroyer extends GameObject implements EntityTypeC{
 		if(GamePhysics.Collision(this, tempa)){
 			if(health ==1)
 				{controller.removeEntity(this);
+				game.setSDKills(game.getSDKills()+1);
+				game.setScore(game.getScore()+100);
 				}
 				else{health--;}
 			controller.removeEntity(tempa);

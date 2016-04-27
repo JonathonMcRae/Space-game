@@ -26,6 +26,10 @@ public class EnemyFighter extends GameObject implements EntityTypeB{
 		return x;
 	}
 	public void shoot(){
+		if (x <= -32 ){
+			controller.removeEntity(this);
+			game.setTieKills(game.getTieKills()+1);
+		}
 		if(is_shooting == 0){
 		controller.addEntity(new EnemyLaser(x, y, skin, game));
 		is_shooting++;
@@ -47,7 +51,8 @@ public class EnemyFighter extends GameObject implements EntityTypeB{
 			if(GamePhysics.Collision(this, tempa)){
 				controller.removeEntity(this);
 				controller.removeEntity(tempa);
-				game.setKills(game.getKills()+1);
+				game.setTieKills(game.getTieKills()+1);
+				game.setScore(game.getScore()+10);
 			}
 		}
 	}
