@@ -44,7 +44,7 @@ public class Player extends GameObject implements EntityTypeA{
 			if(GamePhysics.Collision(this, tempa)){
 				if(health == 1){
 					game.State = game.State.END;
-					health = 3;
+					health = 4;
 					}
 				else{
 					health--;

@@ -45,7 +45,7 @@ public class Player2 extends GameObject implements EntityTypeA{
 				if(health == 1){
 					controller.removeEntity(this);
 					game.State = game.State.END;
-					health = 4;
+					health = 5;
 				}
 				else{
 					health--;

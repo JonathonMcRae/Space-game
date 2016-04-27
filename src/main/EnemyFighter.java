@@ -55,6 +55,7 @@ public class EnemyFighter extends GameObject implements EntityTypeB{
 				game.setScore(game.getScore()+10);
 			}
 		}
+		
 	}
 	public void render(Graphics g){
 		g.drawImage(skin.enemy1, (int)x, (int)y, null);

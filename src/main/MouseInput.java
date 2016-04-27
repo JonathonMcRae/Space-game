@@ -50,6 +50,12 @@ public class MouseInput implements MouseListener{
 				Game.padraicmode = true;
 				Game.State = Game.STATE.GAME;
 			}
+			else if(mx >= 0 && mx <= 40 && my >= 0 && my <= 40)
+			{
+				Game.numberOfPlayers = 2;
+				Game.padraicmode = true;
+				Game.State = Game.STATE.GAME;
+			}
 		}
 
 	}

@@ -48,6 +48,7 @@ public class StarDestroyer extends GameObject implements EntityTypeC{
 			}
 		}
 		
+		
 	}
 	public void shoot(){
 		if(is_shooting == 0){

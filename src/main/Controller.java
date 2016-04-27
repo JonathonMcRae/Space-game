@@ -37,7 +37,6 @@ public class Controller {
 	
 	
 	
-	
 	public void createSD(int SDcount){
 		for(int n = 0; n < SDcount; n++){
 			addEntity(new StarDestroyer(810, r.nextInt(400), skin, this, game));
