@@ -103,7 +103,7 @@ public class Game extends Canvas implements Runnable{
 			e.printStackTrace();
 		}
 		addKeyListener(new KeyboardInput(this));
-		this.addMouseListener(new MouseInput());
+		this.addMouseListener(new MouseInput(this));
 		tp = new Skins(this);
 		c = new Controller(tp, this);
 		menu = new Menu();
